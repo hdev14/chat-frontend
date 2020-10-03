@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4, validate } from 'uuid'
 import { Form as BSForm, FormGroup, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
 import WsClient from '../../WebSocketSingleton'
@@ -9,7 +9,7 @@ const Form: React.FC = () => {
 
   const [name, setName] = useState('')
   const [chatId, setChatId] = useState('')
-  const [error, setError] = useState(false)
+  const [error, setError] = useState('')
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -27,19 +27,22 @@ const Form: React.FC = () => {
   }
 
   function getIn(_: any): void {
-    if (name && chatId) {
-      createChat(name, chatId)
-      setModal(!Modal)
+    setModal(!Modal)
+    if (!validate(chatId)) {
+      setError('ID Inválido.')
     }
+    createChat(name, chatId)
+    setError('')
   }
 
   function toggleModalWithName (_: any): void {
     if (!name) {
-      setError(true)
+      setError('Por favor, digite o seu nome.')
       return;
     }
 
     setModal(!modal)
+    setError('')
   }
 
   return (
@@ -48,12 +51,12 @@ const Form: React.FC = () => {
         <h3 className="text-center">Chat</h3>
         {error && (
           <Alert color="danger">
-            Por favor, digite o seu nome.
+            {error}
           </Alert>
         )}
         <BSForm onSubmit={onSubmit}>
           <FormGroup>
-            <Label for="name">Name</Label>
+            <Label for="name">Nome</Label>
             <Input
               required
               type="text"
@@ -66,9 +69,9 @@ const Form: React.FC = () => {
           <Button
             block
             type="button"
-            color="success"
+            color="secondary"
             onClick={toggleModalWithName}>
-            Entrar em um chat
+            Já tenho o ID!
           </Button>
         </BSForm>
       </section>
@@ -86,7 +89,7 @@ const Form: React.FC = () => {
         </ModalBody>
         <ModalFooter>
           <Button
-            color={chatId ? 'primary' : 'secondary'}
+            color={chatId ? 'success' : 'secondary'}
             onClick={getIn}>
             Confirmar
           </Button>
