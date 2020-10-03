@@ -30,6 +30,7 @@ const Form: React.FC = () => {
     setModal(!Modal)
     if (!validate(chatId)) {
       setError('ID Inválido.')
+      return;
     }
     createChat(name, chatId)
     setError('')
