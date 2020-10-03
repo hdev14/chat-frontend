@@ -1,11 +1,38 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
+import { Message, Direction} from '../../message-types'
 import SendIcon from './SendIcon'
 import './styles.css'
 
+
+
 const Chat: React.FC = () => {
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState<Message[]>([])
   const ulRef = useRef<HTMLUListElement>(null)
+
+  function makeAndSendMessage(author: string, direction: Direction): void {
+    const msg = {
+      type: 'message',
+      author,
+      content: message,
+      timestamp: new Date(),
+      direction
+    }
+    setMessages([...messages, msg])
+    setMessage('')
+  }
+
+  function onKeyPressHandler(e: React.KeyboardEvent<HTMLInputElement>): void {
+    if (e.key === 'Enter') {
+      makeAndSendMessage('Você', Direction.Right)
+    }
+  }
+
+  function onClickHandler(e: React.MouseEvent<any, MouseEvent>): void {
+    makeAndSendMessage('Você', Direction.Right)
+  }
 
   return (
     <main>
@@ -15,41 +42,26 @@ const Chat: React.FC = () => {
           <strong title="Compartilhe o ID com outras pessoas.">ID: 1231sd-123123-sdsdf</strong>
         </div>
         <ul ref={ulRef}>
-          <li className="right">
-            <strong>Nome</strong>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet aliquam qui aperiam soluta molestiae.</p>
-            <small>03 out às 18:27</small>
-          </li>
-          <li className="left">
-            <strong>Nome</strong>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet aliquam qui aperiam soluta molestiae.</p>
-            <small>03 out às 18:27</small>
-          </li>
-          <li className="left">
-            <strong>Nome</strong>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet aliquam qui aperiam soluta molestiae.</p>
-            <small>03 out às 18:27</small>
-          </li>
-          <li className="left">
-            <strong>Nome</strong>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet aliquam qui aperiam soluta molestiae.</p>
-            <small>03 out às 18:27</small>
-          </li>
-          <li className="left">
-            <strong>Nome</strong>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet aliquam qui aperiam soluta molestiae.</p>
-            <small>03 out às 18:27</small>
-          </li>
-          <li className="left">
-            <strong>Nome</strong>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet aliquam qui aperiam soluta molestiae.</p>
-            <small>03 out às 18:27</small>
-          </li>
+          {messages.map((msg, index) => (
+            <li key={index} className={msg.direction}>
+              <div>
+                <strong>{msg.author}</strong>
+                <p>{msg.content}</p>
+              </div>
+              <small>{msg.timestamp.toString()}</small>
+            </li>
+          ))}
         </ul>
         <InputGroup size="md">
-          <Input type="text" placeholder="Escreva sua mensagem" />
+          <Input
+            type="text"
+            autoFocus
+            placeholder="escrever mensagem..."
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            onKeyPress={onKeyPressHandler} />
           <InputGroupAddon addonType="append">
-            <Button color="success">
+            <Button onClick={onClickHandler} color="success">
               <SendIcon />
             </Button>
           </InputGroupAddon>

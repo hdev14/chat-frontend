@@ -1,4 +1,4 @@
-import { MessageData } from './message-data'
+import { MessageData } from './message-types'
 
 class WebSocketSingleton {
   private wsConnection: WebSocket | null = null
