@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { useHistory } from 'react-router-dom'
 import { v4 as uuidv4, validate } from 'uuid'
 import { Form as BSForm, FormGroup, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
@@ -6,7 +7,7 @@ import WsClient from '../../WebSocketSingleton'
 import './styles.css'
 
 const Form: React.FC = () => {
-
+  const history = useHistory()
   const [name, setName] = useState('')
   const [chatId, setChatId] = useState('')
   const [error, setError] = useState('')
@@ -23,10 +24,11 @@ const Form: React.FC = () => {
     e.preventDefault()
     if (name) {
       createChat(name, uuidv4())
+      history.push('/chat')
     }
   }
 
-  function getIn(_: any): void {
+  function getIn (_: any): void {
     setModal(!Modal)
     if (!validate(chatId)) {
       setError('ID Inválido.')
@@ -34,6 +36,7 @@ const Form: React.FC = () => {
     }
     createChat(name, chatId)
     setError('')
+    history.push('/chat')
   }
 
   function toggleModalWithName (_: any): void {
@@ -47,8 +50,8 @@ const Form: React.FC = () => {
   }
 
   return (
-    <main id="form">
-      <section>
+    <main>
+      <section id="form">
         <h3 className="text-center">Chat</h3>
         {error && (
           <Alert color="danger">

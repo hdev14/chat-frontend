@@ -1,13 +1,4 @@
-main#form {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-image: linear-gradient(45deg, var(--primary), var(--info));
-}
-
-main#form section {
+main section#form {
   position: absolute;
   top: 50%;
   left: 50%;
