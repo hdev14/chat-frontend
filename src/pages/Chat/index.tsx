@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
-import { Message, Direction} from '../../message-types'
+import { MessageType, Message, Direction} from '../../message-types'
 import SendIcon from './SendIcon'
 import './styles.css'
 
@@ -14,7 +14,7 @@ const Chat: React.FC = () => {
 
   function makeAndSendMessage(author: string, direction: Direction): void {
     const msg = {
-      type: 'message',
+      type: MessageType.MESSAGE,
       author,
       content: message,
       timestamp: new Date(),
@@ -26,12 +26,12 @@ const Chat: React.FC = () => {
 
   function onKeyPressHandler(e: React.KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {
-      makeAndSendMessage('Você', Direction.Right)
+      makeAndSendMessage('Você', Direction.RIGHT)
     }
   }
 
   function onClickHandler(e: React.MouseEvent<any, MouseEvent>): void {
-    makeAndSendMessage('Você', Direction.Right)
+    makeAndSendMessage('Você', Direction.RIGHT)
   }
 
   return (

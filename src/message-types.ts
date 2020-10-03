@@ -1,13 +1,18 @@
+export enum MessageType {
+  CONNECTION = 1,
+  MESSAGE = 2
+}
+
 export type MessageData = {
-  type: string,
-  author: string,
+  type: MessageType,
+  author?: string,
   content: string,
   timestamp: Date
 }
 
 export enum Direction {
-  Right = 'right',
-  Left = 'left'
+  RIGHT = 'right',
+  LEFT = 'left'
 }
 
 export type Message = MessageData & { direction: Direction }
