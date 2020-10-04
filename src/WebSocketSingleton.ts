@@ -15,8 +15,8 @@ class WebSocketSingleton {
     this.wsConnection?.send(JSON.stringify(data))
   }
 
-  public addEvent(event: string, fn: EventListener): void {
-    this.wsConnection?.addEventListener(event, fn);
+  public addEvent(event: "message" | "error", fn: any): void {
+    this.wsConnection?.addEventListener<typeof event>(event, fn);
   }
 }
 

@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
+import WsClient from '../../WebSocketSingleton'
 import { MessageType, Message, Direction} from '../../message-types'
 import SendIcon from './SendIcon'
 import './styles.css'
@@ -12,6 +13,12 @@ const Chat: React.FC = () => {
   const ulRef = useRef<HTMLUListElement>(null)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
+
+  useEffect(() => {
+    WsClient.addEvent('message', (e: MessageEvent) => {
+      console.log(JSON.parse(e.data))
+    })
+  }, [])
 
   function makeAndSendMessage(author: string, direction: Direction): void {
     const msg = {

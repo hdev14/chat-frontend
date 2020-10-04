@@ -37,7 +37,7 @@ const Form: React.FC = () => {
     }
     createChat(name, chatId)
     setError('')
-    history.push('/chat')
+    history.push('/chat', { chatId })
   }
 
   function toggleModalWithName (_: any): void {
