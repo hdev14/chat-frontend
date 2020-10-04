@@ -4,7 +4,7 @@ interface EventMessageListener {
   (this: WebSocket, ev: MessageEvent): any
 }
 
-class WebSocketSingleton {
+class WebSocketAdapter {
   private connection: WebSocket | null = null
 
   public connect(url: string): void {
@@ -19,11 +19,11 @@ class WebSocketSingleton {
     this.connection?.send(JSON.stringify(data))
   }
 
-  public addOnMessage(fn: EventMessageListener): void {
+  public addOnMessage(func: EventMessageListener): void {
     if (this.connection) {
-      this.connection.onmessage = fn;
+      this.connection.onmessage = func;
     }
   }
 }
 
-export default new WebSocketSingleton()
+export default new WebSocketAdapter()

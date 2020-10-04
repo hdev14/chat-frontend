@@ -3,7 +3,7 @@ import { useHistory } from 'react-router'
 import { v4 as uuidv4, validate } from 'uuid'
 import { Form as BSForm, FormGroup, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
-import WsClient from '../../WebSocketSingleton'
+import WebSocketAdapter from '../../WebSocketAdapter'
 import './styles.css'
 
 const Form: React.FC = () => {
@@ -17,7 +17,7 @@ const Form: React.FC = () => {
 
   function createChat (name: string, chatId: string): void {
     const url = `${process.env.REACT_APP_WS_URL}/?name=${name}&id=${chatId}`
-    WsClient.connect(url)
+    WebSocketAdapter.connect(url)
   }
 
   function onSubmit (e: React.FormEvent<HTMLFormElement>): void {

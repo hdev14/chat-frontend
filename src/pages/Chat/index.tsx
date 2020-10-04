@@ -4,7 +4,7 @@ import { formatRelative } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
-import WsClient from '../../WebSocketSingleton'
+import WebSocketAdapter from '../../WebSocketAdapter'
 import { MessageType, Message, Direction } from '../../message-types'
 import SendIcon from './SendIcon'
 import './styles.css'
@@ -29,7 +29,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
 
-    WsClient.addOnMessage((e: MessageEvent) => {
+    WebSocketAdapter.addOnMessage((e: MessageEvent) => {
       const msg = JSON.parse(e.data) as Message
       if (msg.type === MessageType.MESSAGE) {
         msg.direction = Direction.LEFT
@@ -57,7 +57,7 @@ const Chat: React.FC = () => {
         ...msg,
         sended_at: formatDate(msg.timestamp)
       }])
-    WsClient.sendMessage(msg)
+    WebSocketAdapter.sendMessage(msg)
     setMessage('')
     autoScroll()
   }
