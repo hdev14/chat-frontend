@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useLocation } from 'react-router'
+import {formatDistance, formatISO} from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
 import WsClient from '../../WebSocketSingleton'
@@ -14,13 +16,28 @@ const Chat: React.FC = () => {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
 
+  const formatDate = useCallback((date: Date): string => {
+    console.log(date)
+    return formatDistance(
+      (new Date()),
+      date,
+      {
+        includeSeconds: true,
+        addSuffix: true
+      }
+    )
+  }, [])
+
   useEffect(() => {
     WsClient.addEvent('message', (e: MessageEvent) => {
       const msg = JSON.parse(e.data) as Message
       if (msg.type === MessageType.MESSAGE) {
         msg.direction = Direction.LEFT
       }
-      setMessages([...messages, msg])
+      setMessages([...messages, {
+        ...msg,
+        sended_at: formatDate(msg.timestamp)
+      }])
     })
   }, [messages])
 
@@ -32,7 +49,10 @@ const Chat: React.FC = () => {
       timestamp: new Date(),
       direction
     }
-    setMessages([...messages, msg])
+    setMessages([...messages, {
+        ...msg,
+        sended_at: formatDate(msg.timestamp)
+      }])
     WsClient.sendMessage(msg)
     setMessage('')
   }
@@ -61,7 +81,7 @@ const Chat: React.FC = () => {
                 <strong>{msg.author}</strong>
                 <p>{msg.content}</p>
               </div>
-              <small>{msg.timestamp.toString()}</small>
+              <small>{msg.sended_at}</small>
             </li>
           ))}
         </ul>

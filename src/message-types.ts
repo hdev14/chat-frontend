@@ -15,4 +15,4 @@ export enum Direction {
   LEFT = 'left'
 }
 
-export type Message = MessageData & { direction: Direction }
+export type Message = MessageData & { sended_at?: string, direction: Direction }
