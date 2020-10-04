@@ -16,7 +16,7 @@ const Form: React.FC = () => {
   const toggle = () => setModal(!modal);
 
   function createChat (name: string, chatId: string): void {
-    const url = `ws://localhost:4141/?name=${name}&id=${chatId}`
+    const url = `${process.env.REACT_APP_WS_URL}/?name=${name}&id=${chatId}`
     WsClient.connect(url)
   }
 
