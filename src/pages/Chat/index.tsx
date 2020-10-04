@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useLocation } from 'react-router'
-import {formatDistance, formatISO} from 'date-fns'
+import { formatRelative } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
@@ -17,15 +17,7 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([])
 
   const formatDate = useCallback((date: Date): string => {
-    console.log(date)
-    return formatDistance(
-      (new Date()),
-      date,
-      {
-        includeSeconds: true,
-        addSuffix: true
-      }
-    )
+    return formatRelative(new Date(), new Date(date), { locale: ptBR })
   }, [])
 
   useEffect(() => {

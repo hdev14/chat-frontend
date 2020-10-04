@@ -36,9 +36,13 @@ main section#chat ul {
   box-shadow: 1px 1px 10px 20px #f7f7f7 inset;
 }
 
+main section#chat ul li:last-child {
+  margin-bottom: 100px;
+}
+
 main section#chat ul li {
-  max-width: 55%;
   z-index: -1;
+  max-width: 55%;
 }
 
 main section#chat ul li div strong {
@@ -53,6 +57,7 @@ main section#chat ul li div {
   border-radius: 3px;
   margin: 5px 0;
   color: #444;
+
 }
 
 
@@ -63,6 +68,14 @@ main section#chat ul li div p {
 
 main section#chat ul li small {
   color: #999;
+}
+
+main section#chat ul li:last-child small {
+  padding-bottom: 30px;
+}
+
+main section#chat ul li.left {
+  align-self: flex-start;
 }
 
 main section#chat ul li.right {
