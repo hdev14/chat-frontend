@@ -13,6 +13,7 @@ import './styles.css'
 const Chat: React.FC = () => {
   const { state } = useLocation<{ chatId: number }>()
   const ulRef = useRef<HTMLUListElement>(null)
+  const liRef = useRef<HTMLLIElement>(null)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
 
@@ -20,8 +21,15 @@ const Chat: React.FC = () => {
     return formatRelative(new Date(), new Date(date), { locale: ptBR })
   }, [])
 
+  const autoScroll = useCallback((): void => {
+    if (ulRef.current && liRef.current) {
+      ulRef.current.scrollTop = ulRef.current.offsetHeight - liRef.current.offsetHeight
+    }
+  }, [])
+
   useEffect(() => {
-    WsClient.addEvent('message', (e: MessageEvent) => {
+
+    WsClient.addOnMessage((e: MessageEvent) => {
       const msg = JSON.parse(e.data) as Message
       if (msg.type === MessageType.MESSAGE) {
         msg.direction = Direction.LEFT
@@ -31,7 +39,11 @@ const Chat: React.FC = () => {
         sended_at: formatDate(msg.timestamp)
       }])
     })
-  }, [messages])
+
+    autoScroll()
+  }, [messages, formatDate, autoScroll])
+
+
 
   function makeAndSendMessage(author: string, direction: Direction): void {
     const msg = {
@@ -47,6 +59,7 @@ const Chat: React.FC = () => {
       }])
     WsClient.sendMessage(msg)
     setMessage('')
+    autoScroll()
   }
 
   function onKeyPressHandler(e: React.KeyboardEvent<HTMLInputElement>): void {
@@ -68,7 +81,10 @@ const Chat: React.FC = () => {
         </div>
         <ul ref={ulRef}>
           {messages.map((msg, index) => (
-            <li key={index} className={`${(msg.direction) || ''} ${msg.type}`}>
+            <li
+              key={index}
+              ref={liRef}
+              className={`${(msg.direction) || ''} ${msg.type}`}>
               <div>
                 <strong>{msg.author}</strong>
                 <p>{msg.content}</p>

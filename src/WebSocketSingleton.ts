@@ -1,22 +1,28 @@
 import { MessageData } from './message-types'
 
+interface EventMessageListener {
+  (this: WebSocket, ev: MessageEvent): any
+}
+
 class WebSocketSingleton {
-  private wsConnection: WebSocket | null = null
+  private connection: WebSocket | null = null
 
   public connect(url: string): void {
-    this.wsConnection = new WebSocket(url)
+    this.connection = new WebSocket(url)
   }
 
   public disconnect(): void {
-    this.wsConnection?.close()
+    this.connection?.close()
   }
 
   public sendMessage(data: MessageData): void {
-    this.wsConnection?.send(JSON.stringify(data))
+    this.connection?.send(JSON.stringify(data))
   }
 
-  public addEvent(event: "message" | "error", fn: any): void {
-    this.wsConnection?.addEventListener<typeof event>(event, fn);
+  public addOnMessage(fn: EventMessageListener): void {
+    if (this.connection) {
+      this.connection.onmessage = fn;
+    }
   }
 }
 
