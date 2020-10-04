@@ -17,6 +17,9 @@ const Chat: React.FC = () => {
   useEffect(() => {
     WsClient.addEvent('message', (e: MessageEvent) => {
       const msg = JSON.parse(e.data) as Message
+      if (msg.type === MessageType.MESSAGE) {
+        msg.direction = Direction.LEFT
+      }
       setMessages([...messages, msg])
     })
   }, [messages])
@@ -30,6 +33,7 @@ const Chat: React.FC = () => {
       direction
     }
     setMessages([...messages, msg])
+    WsClient.sendMessage(msg)
     setMessage('')
   }
 
@@ -52,7 +56,7 @@ const Chat: React.FC = () => {
         </div>
         <ul ref={ulRef}>
           {messages.map((msg, index) => (
-            <li key={index} className={`${(msg.direction) && ''} ${msg.type}`}>
+            <li key={index} className={`${(msg.direction) || ''} ${msg.type}`}>
               <div>
                 <strong>{msg.author}</strong>
                 <p>{msg.content}</p>
