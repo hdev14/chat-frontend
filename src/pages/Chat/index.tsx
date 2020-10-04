@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { useLocation } from 'react-router'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
 import { MessageType, Message, Direction} from '../../message-types'
@@ -6,11 +7,11 @@ import SendIcon from './SendIcon'
 import './styles.css'
 
 
-
 const Chat: React.FC = () => {
+  const { state } = useLocation<{ chatId: number }>()
+  const ulRef = useRef<HTMLUListElement>(null)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
-  const ulRef = useRef<HTMLUListElement>(null)
 
   function makeAndSendMessage(author: string, direction: Direction): void {
     const msg = {
@@ -39,7 +40,7 @@ const Chat: React.FC = () => {
       <section id="chat">
         <div id="chat-header">
           <h3>Chat</h3>
-          <strong title="Compartilhe o ID com outras pessoas.">ID: 1231sd-123123-sdsdf</strong>
+          <strong title="Compartilhe o ID com outras pessoas.">ID: {state.chatId}</strong>
         </div>
         <ul ref={ulRef}>
           {messages.map((msg, index) => (

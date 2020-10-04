@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import { v4 as uuidv4, validate } from 'uuid'
 import { Form as BSForm, FormGroup, Input, Label, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap'
 
@@ -23,8 +23,9 @@ const Form: React.FC = () => {
   function onSubmit (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault()
     if (name) {
-      createChat(name, uuidv4())
-      history.push('/chat')
+      const id = uuidv4()
+      createChat(name, id)
+      history.push('/chat', { chatId: id })
     }
   }
 
