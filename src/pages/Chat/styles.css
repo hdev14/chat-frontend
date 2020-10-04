@@ -79,6 +79,31 @@ main section#chat ul li.left div {
   background-color: #efefef;
 }
 
+main section#chat ul li.connection {
+  align-self: center;
+  text-align: center;
+}
+
+main section#chat ul li.connection div {
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main section#chat ul li.connection div strong {
+  font-size: 1rem;
+}
+
+main section#chat ul li.connection div p {
+  text-align: center;
+  margin: 0;
+  margin-left: 5px;
+}
+
 main section#chat img#send {
   height: 24px;
   width: 24px;

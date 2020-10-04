@@ -1,6 +1,6 @@
 export enum MessageType {
-  CONNECTION = 1,
-  MESSAGE = 2
+  CONNECTION = 'connection',
+  MESSAGE = 'message'
 }
 
 export type MessageData = {

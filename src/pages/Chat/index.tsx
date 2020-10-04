@@ -3,7 +3,7 @@ import { useLocation } from 'react-router'
 import { InputGroup, Input, InputGroupAddon, Button } from 'reactstrap'
 
 import WsClient from '../../WebSocketSingleton'
-import { MessageType, Message, Direction} from '../../message-types'
+import { MessageType, Message, Direction } from '../../message-types'
 import SendIcon from './SendIcon'
 import './styles.css'
 
@@ -16,9 +16,10 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     WsClient.addEvent('message', (e: MessageEvent) => {
-      console.log(JSON.parse(e.data))
+      const msg = JSON.parse(e.data) as Message
+      setMessages([...messages, msg])
     })
-  }, [])
+  }, [messages])
 
   function makeAndSendMessage(author: string, direction: Direction): void {
     const msg = {
@@ -51,7 +52,7 @@ const Chat: React.FC = () => {
         </div>
         <ul ref={ulRef}>
           {messages.map((msg, index) => (
-            <li key={index} className={msg.direction}>
+            <li key={index} className={`${(msg.direction) && ''} ${msg.type}`}>
               <div>
                 <strong>{msg.author}</strong>
                 <p>{msg.content}</p>
