@@ -9,4 +9,4 @@
 
 
 ## Backend
-A backend desse frontend se encontra nesse repositório :point-left: https://github.com/hdev14/chat-backend
+A backend desse frontend se encontra nesse repositório 👉 https://github.com/hdev14/chat-backend
