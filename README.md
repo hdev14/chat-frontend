@@ -1,3 +1,4 @@
+<h2 align="center"> Chat com ReactJS e Typescript</h2>
 ![chat](.github/chat.gif)
 
 ## Uso
